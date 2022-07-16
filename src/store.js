@@ -26,8 +26,9 @@ export default createStore({
             state.comments = generateComments(state.users, commentsCount, minReplies, maxReplies);
         },
         updateUser(state, idx) {
-            console.log(idx);
-            state.user = JSON.parse(JSON.stringify(state.users[idx]));
+            if (!state.user || state.users[idx].id !== state.user.id) {
+                state.user = state.users[idx];
+            }
         },
         saveReply(state, {id, content}) {
             state.replies[id] = content;

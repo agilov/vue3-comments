@@ -1,10 +1,10 @@
 import {createApp} from "vue";
 
 import store from './store'
-import ChatApp from "./ChatApp.vue";
+import App from "./App.vue";
 import "bootstrap/dist/css/bootstrap.min.css"
 import "./styles/style.css";
 
-const app = createApp(ChatApp)
+const app = createApp(App)
 app.use(store)
 app.mount('#app')

@@ -1,71 +1,32 @@
-<template>
-  <span>{{ val }}</span>
-</template>
+<script setup>
+import {displayAgo} from "../lib/filters";
+import {onMounted, onUnmounted, ref} from "vue";
 
-<script>
-export default {
-  name: "Ticker",
-  props: {
-    time: Number,
-  },
-  data: function () {
-    return {
-      now: Math.floor(Date.now() / 1000),
-      ticker: null
-    }
-  },
-  unmounted: function () {
-    if (this.ticker !== null) {
-      clearInterval(this.ticker)
-    }
-  },
-  mounted: function () {
-    if ((this.now - parseInt(this.time)) / 3600 < 1) {
-      this.ticker = setInterval(() => {
-        this.now = Math.floor(Date.now() / 1000)
-      }, 30000)
-    }
-  },
-  computed: {
-    val: function () {
-      const seconds = this.now - parseInt(this.time);
+const {time} = defineProps({
+  time: Number,
+});
 
-      let interval = seconds / 31536000;
+let interval = ref(Math.floor(Date.now() / 1000) - parseInt(time));
+let minutesAgo = interval.value / 60;
 
-      if (interval > 1) {
-        return Math.floor(interval) + " years ago";
-      }
-      interval = seconds / 2592000;
-      if (interval > 1) {
-        return Math.floor(interval) + " months ago";
-      }
-      interval = seconds / 86400;
-      if (interval > 1) {
-        return Math.floor(interval) + " days ago";
-      }
-      interval = seconds / 3600;
-      if (interval > 1) {
-        return Math.floor(interval) + " hours ago";
-      }
-      interval = seconds / 60;
-      if (interval > 1) {
-        const minutes = Math.floor(interval);
+// Update interval only if time is recent (less that an hour)
+// The oldest the time of creation - the bigger update interval
+if (minutesAgo < 60) {
+  let timer = null;
+  let intervalMultiplier = Math.floor(minutesAgo) || 1;
 
-        if (minutes > 1) {
-          return minutes + " minutes ago";
-        }
+  onMounted(() => {
+    timer = setInterval(() => {
+      interval.value = Math.floor(Date.now() / 1000) - parseInt(time)
+    }, 20000 * intervalMultiplier)
+  })
 
-        return minutes + " minute ago";
-      }
-
-      const sec = Math.floor(seconds);
-
-      if (sec < 3) {
-        return 'just yet'
-      }
-
-      return sec + " seconds ago";
-    }
-  }
-};
+  onUnmounted(() => {
+    clearInterval(timer);
+  })
+}
 </script>
+
+<template>
+  <span>{{ displayAgo(interval) }}</span>
+</template>
