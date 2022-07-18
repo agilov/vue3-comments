@@ -4,7 +4,7 @@ defineProps({own: Boolean})
 </script>
 <template>
   <div>
-    <button class="btn btn-sm btn-default" @click="emit('reply')">
+    <button v-if="!own" class="btn btn-sm btn-default" @click="emit('reply')">
       Reply
     </button>
 

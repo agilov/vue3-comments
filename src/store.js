@@ -122,10 +122,10 @@ export default createStore({
 
             state.comments = comments;
         },
-        newReply(state, {id, tag}) {
+        newReply(state, {id, content}) {
             state.reply = id;
             if (!state.replies[id]) {
-                state.replies[id] = '@' + tag + ' ';
+                state.replies[id] = content;
             }
         },
         clearReply(state, id) {

@@ -147,7 +147,7 @@ export default {
     newReply() {
       this.$store.commit('newReply', {
         id: this.comment.id,
-        tag: this.comment.user.name || this.comment.user.username
+        content: this.comment.thread_id > 0 ? '@' + (this.comment.user.name || this.comment.user.username) + ' ' : ''
       });
     },
     saveReply(content) {
@@ -170,7 +170,9 @@ export default {
       this.clearReply();
       this.$nextTick(() => {
         document.querySelector('#reply-' + id).scrollIntoView({
-          behavior: 'smooth'
+          behavior: 'smooth',
+          block: "end",
+          inline: "nearest"
         });
       });
     }
