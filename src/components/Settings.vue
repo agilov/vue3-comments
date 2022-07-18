@@ -7,7 +7,7 @@ const store = useStore();
 const saved = localStorage.getItem('settings');
 const settings = saved ? JSON.parse(saved) : {
   commentsCount: 20,
-  currentUser: parseInt(this.store.state.user.id),
+  currentUser: parseInt(store.state.user.id),
   minReplies: 0,
   maxReplies: 10,
 }
@@ -43,7 +43,7 @@ watch(state, () => {
 </script>
 
 <template>
-  <form class="row g-3">
+  <form class="row g-3" @submit.stop.prevent="regenerateComments">
     <div class="col-8 ">
       <div class="bg-white p-3 shadow-sm">
         <div class="row">

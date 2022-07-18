@@ -61,7 +61,6 @@ export function generateComments(users, commentsCount, minReplies, maxReplies) {
         comments.push({
             "id": big_id(),
             "thread_id": "0",
-            "audio_id": "1",
             "user": users[rand(0, 9)],
             "time_code": rand(1, 200),
             "content": faker.lorem.sentences(rand(1, 15)),
@@ -82,7 +81,6 @@ export function generateComments(users, commentsCount, minReplies, maxReplies) {
                 "id": big_id(),
                 "thread_id": comments[i].id,
                 "reply_to": replies.length > 2 ? replies[rand(0, replies.length - 1)].id : comments[i].id,
-                "audio_id": "1",
                 "user": users[rand(0, 9)],
                 "time_code": 0,
                 "content": faker.lorem.sentences(rand(1, 4)),

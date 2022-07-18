@@ -14,6 +14,7 @@ export default createStore({
         const users = generateUsers();
 
         return {
+            playback: 0,
             reply: '',
             replies: {},
             users: users,
@@ -22,6 +23,13 @@ export default createStore({
         }
     },
     mutations: {
+        incrementPlayback(state) {
+            state.playback++;
+
+            if (state.playback > 200) {
+                state.playback = 1;
+            }
+        },
         regenerateComments(state, {commentsCount, minReplies, maxReplies}) {
             state.comments = generateComments(state.users, commentsCount, minReplies, maxReplies);
         },
@@ -47,7 +55,6 @@ export default createStore({
                         "id": id,
                         "thread_id": threadId,
                         "reply_to": commentId,
-                        "audio_id": "1",
                         "user": state.user,
                         "time_code": 0,
                         "content": content,
@@ -132,7 +139,6 @@ export default createStore({
             state.comments.unshift({
                 id: comment.id,
                 thread_id: "0",
-                audio_id: comment.audio_id,
                 "user": state.user,
                 "time_code": comment.time_code,
                 "content": comment.content,
